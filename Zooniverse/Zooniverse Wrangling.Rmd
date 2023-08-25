@@ -48,7 +48,16 @@ if(!require(tidyverse)){
 }
 ```
 
+### Establish the Working Directory
 
+Since we are using GitHub and are working within a single repository, establishing the working directory may be excessive but I do it out of good practice to know where I am pulling or pushing files to and from.
+
+
+```{r, message = FALSE, warning = FALSE}
+setwd("https://github.com/Smithsonian/Oysters/tree/main/Zooniverse")
+
+getwd()
+```
 
 
 ## Including Plots
