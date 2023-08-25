@@ -1,0 +1,61 @@
+---
+title: "Zooniverse Wrangling"
+author: "Author: Sam McNeely"
+date: "Date: `r Sys.Date()`"
+output: html_document
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Project Description**
+
+### Purpose
+
+This R Markdown document is part of the greater FishCon oyster reef restoration monitoring project. The goal of the project is to gain a better understanding of how oyster reef restoration affects the existing habitats across the Chesapeake Bay and its tributaries. The main effects we are interested in include reef structure and animal communities. 
+
+### Methods
+
+GoPro footage has been captured through many sampling events to qualitatively score reef structure at certain sites in accordance with the protocol designed by Heggie & Ogburn (2021).
+
+### Citizen Science
+
+In an effort to broaden FishCon's limited scope of data collection and qualitative habitat scoring, SERC's Public Engagement is bringing citizen scientists from across the Chesapeake Bay to assist. Data is collected by citizen scientists that use their own vessels to reach selected sites to capture GoPro footage. Images are then extracted from the videos and uploaded to the online citizen science platform [Zooniverse](https://www.zooniverse.org). People with a Zooniverse account can join the project and begin scoring the GoPro images. Once images have been scored repeatedly, the data is pulled from Zooniverse to be analyzed.
+
+### Beta testing
+
+FishCon and SERC Public Engagement are currently in the testing phase to test citizen scientist reliability and score concensus. The data are from an environmental science class at South River High School. This R Markdown document shows the process of data wrangling and analysis to observe citizen scientist reliability and score consensus.
+
+## **Data Wrangling**
+
+### Load R Packages
+
+Before we even bring in the Zooniverse dataset, we need to load the R packages that supply valuable functions necessary to wrangle the data. The *tidyverse* package contains many other packages that are quite useful for data wrangling, analysis, and even visualization.
+
+Let's check to see if *tidyverse* is installed on our system. If not, we can install *tidyverse* and then we also need to be sure to load it into the current session. We can do all of this in one step through an **if-else** statement.
+
+```{r, message = FALSE, warning = FALSE}
+if(!require(tidyverse)){
+  install.packages("tidyverse")
+  library(tidyverse)
+} else {
+  library(tidyverse)
+}
+```
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
