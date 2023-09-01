@@ -23,12 +23,6 @@ if(!require(tidyverse)){ # if package tidyverse is not installed
 # check cwd
 getwd()
 
-# change directory
-setwd('C:/Users/mcneelys/OneDrive - Smithsonian Institution/Desktop/Oysters/Data/GoPro/Zooniverse')
-
-# check cwd again
-getwd()
-
 ## Data wrangling
 # load the data
 rawdata <- read.csv('chesapeake-reefs-classifications_1June23.csv')
