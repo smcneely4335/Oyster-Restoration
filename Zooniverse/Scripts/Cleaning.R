@@ -48,16 +48,36 @@ data <- data[with(data, order(Site)), ]
 # Find the % of student scores that are correct for each site
 # df: site, expert_score, percent_correct
 perc_correct_df <- data.frame(summary$site, summary$expert_score) %>% 
-  mutate(percent_correct = case_when(summary$expert_score == 0 ~ (100 * (summary$zero/summary$total)),
-                                     summary$expert_score == 1 ~ (100 * (summary$one/summary$total)),
-                                     summary$expert_score == 2 ~ (100 * (summary$two/summary$total)),
-                                     summary$expert_score == 3 ~ (100 * (summary$three/summary$total))
+  mutate(percent_correct = case_when(summary$expert_score == 0 ~ round((100 * (summary$zero/summary$total)), digits = 2),
+                                     summary$expert_score == 1 ~ round((100 * (summary$one/summary$total)), digits = 2),
+                                     summary$expert_score == 2 ~ round((100 * (summary$two/summary$total)), digits = 2),
+                                     summary$expert_score == 3 ~ round((100 * (summary$three/summary$total)), digits = 2)
   ))
+colnames(perc_correct_df) <- c('site', 'expert_score', 'percent_correct')
 
 # if a majority of students didn't get it correct, then what score did a majority assign
-perc_correct_df <- 
+summ_perc <- data.frame()
 
-
+for(i in 1:nrow(summary)){
+   summ_perc[nrow(summ_perc) + 1, 'site'] <- summary$site[i]
+   
+   zero_perc <- round((100 * (summary$zero[i]/summary$total[i])), digits = 2)
+   summ_perc[nrow(summ_perc), 'zero_perc'] <- zero_perc
+   
+   one_perc <- round((100 * (summary$one[i]/summary$total[i])), digits = 2)
+   summ_perc[nrow(summ_perc), 'one_perc'] <- one_perc
+   
+   two_perc <- round((100 * (summary$two[i]/summary$total[i])), digits = 2)
+   summ_perc[nrow(summ_perc), 'two_perc'] <- two_perc
+   
+   three_perc <- round((100 * (summary$three[i]/summary$total[i])), digits = 2)
+   summ_perc[nrow(summ_perc), 'three_perc'] <- three_perc
+   
+   mostcomm <- list()
+   if(zero_perc > one_perc & two_perc & three_perc)
+   
+   summ_perc[nrow(summ_perc), 'expert_score'] <- summary$expert_score[i]
+}
 
 
 
