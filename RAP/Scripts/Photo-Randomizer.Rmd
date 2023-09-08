@@ -1,0 +1,58 @@
+---
+title: "Rapid Assessment Protocol: Photo Randomizer Script"
+author: "Sam McNeely"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Step 1: Install and load packages
+
+Before beginning any randomization of photos and sites for unbiased scoring, we need to install the necessary packages and load them into the current session so that their functions can be used.
+
+We can accomplish this in a single *if-else* statement explained below:
+  
+  A)  If the package **writexl** is NOT currently installed in your package
+      library,install the package and then load it into the current session. Using
+      the function `require()`, we can make check if **writexl** is installed 
+      through a conditional statement. The `!` before `require()` reverses the 
+      boolean value `require()` generates without the `!`. For example, if 
+      `require(writexl)` is TRUE, then `!require(writexl)` is FALSE.
+  B)  If the package **writexl** is currently installed in your package library, 
+      then `!require(writexl)` will be FALSE. A FALSE condition in the *if-else*
+      statement skips to the *else* section and runs the code inside it: 
+      `library(writexl)`.
+
+```{r, message = FALSE, warning = FALSE}
+if(!require(writexl)){
+  install.packages("writexl")
+  library(writexl)
+} else {
+  library(writexl)
+}
+```
+
+Follow the same format for the `tidyverse` package.
+
+```{r, message = FALSE, warning = FALSE}
+if(!require(tidyverse)){
+  install.packages("tidyverse")
+  library(tidyverse)
+} else {
+  library(tidyverse)
+}
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
