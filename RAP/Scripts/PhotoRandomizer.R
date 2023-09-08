@@ -3,6 +3,10 @@
 library(writexl)
 library(tidyverse)
 
+## ALWAYS check working directory
+# it should be set to ./GitHub/Oysters/RAP
+getwd() # if not, the use setwd() to change the current working directory
+
 ## Read in datasheets
 # Metadata
 mdat <- read.xlsx(xlsxFile = './Scoring Metadata/RAP_Metadata.xlsx',
@@ -14,10 +18,8 @@ coord <- read.xlsx(xlsxFile = './Data/Site Coordinates/Rapp_22804_Presurvey_Poin
 
 ## Side A
 # Define variables (edit variables Site_a, Date_a, & Location_a)
-Site_a <- c(1, 8, 16, 44, 52, 68, 94, 100, 125, 139, 147, 163, 191, 200, 211, 245,
-            270, 278, 290, 309, 320, 328, 338, 345, 356, 364, 375, 382, 393, 398,
-            406)
-Date_a <- rep("08/16/2023", length(Site_a))
+Site_a <- c(13, 21, 89, 103, 129, 142, 160, 239, 255, 296, 340, 360)
+Date_a <- rep("08/17/2023", length(Site_a))
 Location_a <- rep("Rappahannock Belle Isle", length(Site_a))
 Random_Assignment_a <- sample(1:length(Site_a), length(Site_a))
 Habscore_a <- rep(NA, length(Site_a))
@@ -45,10 +47,8 @@ df_a <- data.frame(Date_a, Location_a, Site_a, Coord_x_a, Coord_y_a,
 
 ## Side B
 # Define variables (edit variables Site_b, Date_b, & Location_b)
-Site_b <- c(1, 8, 16, 44, 52, 68, 94, 100, 125, 139, 147, 163, 191, 200, 211, 245,
-            270, 278, 290, 309, 320, 328, 338, 345, 356, 364, 375, 382, 393, 398,
-            406)
-Date_b <- rep("08/16/2023", length(Site_b))
+Site_b <- c(13, 21, 89, 103, 129, 142, 160, 239, 255, 296, 340, 360)
+Date_b <- rep("08/17/2023", length(Site_b))
 Location_b <- rep("Rappahannock Belle Isle", length(Site_b))
 Random_Assignment_b <- sample(1:length(Site_b), length(Site_b))
 Habscore_b <- rep(NA, length(Site_b))
@@ -126,7 +126,8 @@ if(file.exists(wd)) {
   }
 }
 
-filename <- 'RB_2023228_NoMaxScores.xlsx'
+# edit file name and location if necessary
+filename <- 'RB_2023229_NoMaxScores.xlsx'
 
-# Export list to excel (edit file name and location if necessary)
+# Export list to excel 
 write_xlsx(sheets, file.path(wd, sub_dir, filename))
