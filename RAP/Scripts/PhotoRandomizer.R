@@ -1,5 +1,18 @@
 ### Excel Datasheet and Randomizer
 # load packages
+packs <- c('writexl', 'tidyverse')
+packin <- function(...) {
+  packlist <- list(...)
+  for(i in 1:length(packlist)) {
+    if(!requireNamespace(packlist[i])) {
+    install.packages(packlist[i])
+    library(packlist[i])
+      } else {
+        library(packlist[i])
+        }
+  }
+}
+
 if(!require(writexl)){
   install.packages('writexl')
   library(writexl)
@@ -56,6 +69,54 @@ df_a <- data.frame(Date_a, Location_a, Site_a, Coord_x_a, Coord_y_a,
 #df_a <- df_a %>%
 #  add_row(Date_a = "05/11/2023", Location_a = "Eastern Bay", Site_a = 15, Habscore_a = NA, Notes_a = "Missing image")
 
+
+## create a function to make the editing process easier and faster
+# define function parameters
+Site_a <- c()
+Site_b <- c()
+missing_images_a <- c()
+missing_images_b <- c()
+Date <- ''
+Location <- ''
+  
+side_a <- function(Site_a = Site_a, Site_b = Site_b, m_images_a = missing_images_a,
+                   m_images_b = missing_images_b, Date = Date, Location = Location, 
+                   Metadata = mdat, Coord_data = coord) {
+  
+  # define set parameters: Date, Location, Random_Assignment_a, 
+  # Habscore_a, and Notes_a
+  Date_a <- rep(Date, length(Site_a))
+  Location_a <- rep(Location, length(Site_a))
+  Random_Assignment_a <- sample(1:length(Site_a), length(Site_a))
+  Habscore_a <- rep(NA, length(Site_a))
+  Notes_a <- rep("", length(Site_a))
+  
+  
+  # create the dataframe for side A
+  df_a <- data.frame(Date_a, Location_a, Site_a, Random_Assignment_a, 
+                     Habscore_a, Notes_a)
+  
+  # append the dataframe with rows for missing images
+  if(length(missing_images_a) >= 1) {
+    for(i in 1:length(missing_images_a)) {
+    df_a <- df_a %>%
+      add_row(Date_a = Date, Location_a = Location, Site_a = missing_images_a[i],
+              Habscore_a = NA, Notes_a = "Missing image")
+    }
+  }
+  
+  # define empty coordinate vectors
+  Coord_x_a <- c()
+  Coord_y_a <- c()
+  
+  # iterate through coordinates data to fill empty coordinate vectors
+  # with coordinates that align with each site that was sampled
+  for(i in 1:nrow(df_a)){
+    Coord_x_a[i] <- Coord_data$POINT_X[Coord_data$`OBJECTID.*` == df_a$Site_a[i]]
+    Coord_y_a[i] <- Coord_data$POINT_Y[Coord_data$`OBJECTID.*` == df_a$Site_a[i]]
+  }
+  
+}
 ## Side B
 # Define variables (edit variables Site_b, Date_b, & Location_b)
 Site_b <- c(13, 21, 89, 103, 129, 142, 160, 239, 255, 296, 340, 360)
