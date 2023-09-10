@@ -1,7 +1,18 @@
 ### Excel Datasheet and Randomizer
 # load packages
-library(writexl)
-library(tidyverse)
+if(!require(writexl)){
+  install.packages('writexl')
+  library(writexl)
+} else {
+  library(writexl)
+}
+
+if(!require(tidyverse)){
+  install.packages('tidyverse')
+  library(tidyverse)
+} else {
+  library(tidyverse)
+}
 
 ## ALWAYS check working directory
 # it should be set to ./GitHub/Oysters/RAP
