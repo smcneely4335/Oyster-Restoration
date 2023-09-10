@@ -1,31 +1,19 @@
 ### Excel Datasheet and Randomizer
-# load packages
-packs <- c('writexl', 'tidyverse')
+## load packages
+# write a function that checks if packages are installed and loads them
 packin <- function(...) {
-  packlist <- list(...)
-  for(i in 1:length(packlist)) {
-    if(!requireNamespace(packlist[i])) {
-    install.packages(packlist[i])
-    library(packlist[i])
+  packs <- list(...)
+  for(i in 1:length(packs)) {
+    if(!requireNamespace(packs[[i]])) {
+    install.packages(packs[[i]])
+    library(packs[[i]], character.only = TRUE)
       } else {
-        library(packlist[i])
+        library(packs[[i]], character.only = TRUE)
         }
   }
 }
 
-if(!require(writexl)){
-  install.packages('writexl')
-  library(writexl)
-} else {
-  library(writexl)
-}
-
-if(!require(tidyverse)){
-  install.packages('tidyverse')
-  library(tidyverse)
-} else {
-  library(tidyverse)
-}
+packin('writexl', 'tidyverse')
 
 ## ALWAYS check working directory
 # it should be set to ./GitHub/Oysters/RAP
