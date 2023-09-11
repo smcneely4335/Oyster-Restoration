@@ -76,20 +76,39 @@ summ_site <- data_sort %>%
   # per site. These three variable are then tossed into a new dataframe.
   summarize(Count = n())
 
-summ_tot <- data %>% 
+# find the total times that each site image was scored
+summ_tot <- data_sort %>% 
   group_by(Site) %>% 
   summarize(total = n())
+
+# spread() transpose the dataframe so we can see how many times each site was 
+# scored a 0, 1, 2, and 3
 summary <- spread(summ_site, Score, Count)
+
+# change the colnames to be character classes
 colnames(summary) <- c('site', 'zero', 'one', 'two', 'three')
+
+# create a column for the total time each site image was scored to the 
+# summary dataframe
 summary$total <- summ_tot$total
+
+# reassign any NA values to 0
 summary[is.na(summary)] <- 0
-summary$expert_score <- Expert_Score
 
-# look at data ordered alphanumerically by site to copy over the correct order of the expert score
-data <- data[with(data, order(Site)), ]
+# create a mode column for most common score assigned to each site image
+# data MUST be ungrouped before mutated: ungroup()
+summary <- ungroup(summary) %>% 
+  mutate(mode = case_when(((summary$zero > summary$one) & (summary$zero > summary$two) & (summary$zero > summary$three)) ~ 0,
+                          ((summary$one > summary$zero) & (summary$one > summary$two) & (summary$one > summary$three)) ~ 1,
+                          ((summary$two > summary$zero) & (summary$two > summary$one) & (summary$two > summary$three)) ~ 2,
+                          ((summary$three > summary$zero) & (summary$three > summary$one) & (summary$three > summary$two)) ~ 3,
+                          )
+         )
 
+# create a column for the expert score for each site
+summary$expert_score <- expert_score
 
-# Find the % of student scores that are correct for each site
+## Find the % of student scores that are correct for each site
 # df: site, expert_score, percent_correct
 perc_correct_df <- data.frame(summary$site, summary$expert_score) %>% 
   mutate(percent_correct = case_when(summary$expert_score == 0 ~ round((100 * (summary$zero/summary$total)), digits = 2),
@@ -99,7 +118,8 @@ perc_correct_df <- data.frame(summary$site, summary$expert_score) %>%
   ))
 colnames(perc_correct_df) <- c('site', 'expert_score', 'percent_correct')
 
-# if a majority of students didn't get it correct, then what score did a majority assign
+# find the percentage of the total assignments that each score was assigned
+# to each site
 summ_perc <- data.frame()
 
 for(i in 1:nrow(summary)){
@@ -117,40 +137,7 @@ for(i in 1:nrow(summary)){
    three_perc <- round((100 * (summary$three[i]/summary$total[i])), digits = 2)
    summ_perc[nrow(summ_perc), 'three_perc'] <- three_perc
    
-   mostcomm <- list()
-   if(zero_perc > one_perc & two_perc & three_perc)
+   summ_perc[nrow(summ_perc), 'mode'] <- summary$mode[i]
    
    summ_perc[nrow(summ_perc), 'expert_score'] <- summary$expert_score[i]
 }
-
-
-
-
-
-tempdf <- data.frame(unique(data$Site), unique(data$Expert_Score))
-
-site <- c()
-for(i in 1:length(unique(data$Site))){
-  site <- append(site, unique(data$Site)[i])
-}
-uniq_data <- data[unique(Site), ]
-
-
-
-sort(unique(data$Site))
-
-
-# get just the sites into a list and then extract the expert score for each of those unique sites
-for(i in 1:nrow(data)){
-  if(!(data$Site[i] %in% site)){
-    site <- append(site, list(data$Site[i]))
-    tempdf[nrow(tempdf) + 1,] <- data$Site[i]
-  }
-}
-
-lst_obj <- list(rbind(as.character(site), es))
-tempdf <- data.frame(lst_obj) %>% 
-  t() %>% 
-  data.frame()
-summary$Expert_Score <- c()
-
