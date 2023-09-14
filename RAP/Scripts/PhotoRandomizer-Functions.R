@@ -31,3 +31,13 @@
 ################################################################################
 
 ### R Script ###
+
+## load packages
+# make sure pacman package is installed
+if(!require(pacman)) {
+  install.packages('pacman')
+}
+
+# p_load() from pacman package installs and loads packages called as arguments;
+# tidyverse for data wrangling and writexl to prep the Excel workbook file
+pacman::p_load(tidyverse, writexl)
